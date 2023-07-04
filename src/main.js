@@ -1,8 +1,9 @@
-import { requireComponents }    from '@/components'
-import {createApp} from 'vue'
+import { createApp }       from 'vue'
+import { registerPlugins } from '@/plugins'
+import App                 from './App.vue'
 
-const app = createApp('App.vue')
+const app = createApp(App)
 
-requireComponents(app)
+registerPlugins(app)
 
 app.mount('#app')

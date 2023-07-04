@@ -1,13 +1,18 @@
-import vue                      from '@vitejs/plugin-vue'
-import { defineConfig }         from 'vite'
-// import svgLoader                from 'vite-svg-loader'
-// import vitePluginRequire        from 'vite-plugin-require'
-import { fileURLToPath, URL }   from 'url'
+import vue                    from '@vitejs/plugin-vue'
+import { defineConfig }       from 'vite'
+import svgLoader              from 'vite-svg-loader'
+import { fileURLToPath, URL } from 'url'
 
 export default defineConfig({
+  plugins: [
+    vue(),
+    svgLoader({svgoConfig: {plugins: [{ name: 'prefixIds', params: { prefix: 'svg_loader_prefix_' } }] }}),
+  ],
   resolve: {
     alias: [
-      {find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url))},
+      {
+        find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url))
+      },
     ],
   },
   css: {
@@ -16,11 +21,7 @@ export default defineConfig({
         additionalData: `@use "@/styles/scss/_global.scss" as *;`
       }
     }
-  },
-  plugins: [
-    vue(),
-    // svgLoader(),
-    // vitePluginRequire,
-  ]
+  }
+
 })
 
