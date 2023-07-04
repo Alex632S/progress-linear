@@ -6,7 +6,7 @@ const mocks = useMocksStore()
 </script>
 <template>
     <div class="wrapper">
-        <the-progress-linear width="876" progress="100" :store="mocks"/>
+        <the-progress-linear width="876" progress="20" :store="mocks"/>
     </div>
 </template>
 
