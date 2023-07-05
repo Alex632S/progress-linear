@@ -1,20 +1,41 @@
 <script lang="ts" setup>
-import IconsSvg from '@/assets/IconsSvg.vue'
+import IconsSvg         from '@/assets/IconsSvg.vue'
+import { watchEffect }  from 'vue'
 interface Props {
-    store   : object,
+    store   : any,
     width   : string,
-    progress: number
+    current : number
 }
-
 const props = defineProps<Props>()
+
+//
+// watchEffect(() => {
+//     if (props.store.games[0].bestResult <= props.store.thresholdPoints) {
+//         props.store.games[0].bestResult = props.current
+//
+//         if (props.store.games[0].bestResult > 0) {
+//             props.store.games[0].isPlayed = true
+//         }
+//     } else if (props.store.games[0].bestResult > props.store.thresholdPoints) {
+//         props.store.games[0].isPlayed = false
+//     }
+// })
 </script>
 
 <template>
-    <div class="line" :style="{ maxWidth: props.width + 'px' }">
+    <div class="line"
+         :style="{ maxWidth: width + 'px' }"
+    >
+
         <div class="line__progress-wrap">
-            <div class="line__progress" :style="{ width: props.progress + '%' }"></div>
+            <div class="line__progress"
+                 :style="{ width: current * 100 / store.stages[store.stages.length - 1].thresholdPoints + '%' }"
+            ></div>
         </div>
-        <div v-for="(item, index) in store.stages" :key="index" class="line__slot">
+        <div class="line__slot"
+             v-for="(item, index) in store.stages"
+             :key="index"
+        >
             <div class="line__inner">
                 <icons-svg v-if="store.stages.length - 1 !== index"
                            style="transform: translateX(50%);"
@@ -30,6 +51,16 @@ const props = defineProps<Props>()
                            width-svg="48px"
                            height-svg="25px"
                 />
+                <div v-if="index === 0"
+                     class="line__value line__value--position"
+                >0</div>
+                <div class="line__value">
+                    <span v-show="item.games[0].bestResult <= item.thresholdPoints">
+                        {{ current }}
+                        &nbsp;/&nbsp;
+                    </span>
+                    <span>{{ item.thresholdPoints }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -41,6 +72,22 @@ const props = defineProps<Props>()
     width: 100%;
     height: 40px;
     position: relative;
+}
+
+.line__value {
+    position: absolute;
+    bottom: -74%;
+    right: 0;
+    width: max-content;
+    opacity: 50%;
+    transform: translateX(50%);
+
+    @include fontInter;
+}
+
+.line__value.line__value--position {
+    left: 7px;
+    transform: translateX(-50%);
 }
 
 .line__progress-wrap {
@@ -97,7 +144,7 @@ const props = defineProps<Props>()
 .line__icon {
     color: $color-primary;
     position: absolute;
-    top: -1.8em;
+    top: -70.8%;
     right: 0;
 }
 </style>
