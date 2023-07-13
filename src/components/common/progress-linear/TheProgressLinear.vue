@@ -1,25 +1,39 @@
 <script lang="ts" setup>
-import IconsSvg         from '@/assets/IconsSvg.vue'
-import { watchEffect }  from 'vue'
+import IconsSvg from '@/assets/IconsSvg.vue'
+import {watchEffect} from 'vue'
+
 interface Props {
-    store   : any,
-    width   : string,
-    current : number
+    store: any,
+    width: string,
+    current: number,
+    valueInput: any
 }
 const props = defineProps<Props>()
-
-//
-// watchEffect(() => {
-//     if (props.store.games[0].bestResult <= props.store.thresholdPoints) {
-//         props.store.games[0].bestResult = props.current
-//
-//         if (props.store.games[0].bestResult > 0) {
-//             props.store.games[0].isPlayed = true
-//         }
-//     } else if (props.store.games[0].bestResult > props.store.thresholdPoints) {
-//         props.store.games[0].isPlayed = false
-//     }
-// })
+watchEffect(() => {
+    if (props.valueInput > 0 && props.valueInput <= props.store.stages[0].thresholdPoints) {
+        props.store.stages[0].games[0].isPlayed = true;
+        props.store.stages[1].games[0].isPlayed = false;
+    } else if (props.valueInput > props.store.stages[0].thresholdPoints && props.valueInput <= props.store.stages[1].thresholdPoints) {
+        props.store.stages[0].games[0].isPlayed = false;
+        props.store.stages[1].games[0].isPlayed = true;
+        props.store.stages[2].games[0].isPlayed = false;
+    } else if (props.valueInput > props.store.stages[1].thresholdPoints && props.valueInput <= props.store.stages[2].thresholdPoints) {
+        props.store.stages[1].games[0].isPlayed = false;
+        props.store.stages[2].games[0].isPlayed = true;
+        props.store.stages[3].games[0].isPlayed = false;
+    } else if (props.valueInput > props.store.stages[2].thresholdPoints && props.valueInput <= props.store.stages[3].thresholdPoints) {
+        props.store.stages[2].games[0].isPlayed = false;
+        props.store.stages[3].games[0].isPlayed = true;
+        props.store.stages[4].games[0].isPlayed = false;
+    } else if (props.valueInput > props.store.stages[3].thresholdPoints && props.valueInput <= props.store.stages[4].thresholdPoints) {
+        props.store.stages[3].games[0].isPlayed = false;
+        props.store.stages[4].games[0].isPlayed = true;
+        props.store.stages[5].games[0].isPlayed = false;
+    } else if (props.valueInput > props.store.stages[4].thresholdPoints && props.valueInput <= props.store.stages[5].thresholdPoints) {
+        props.store.stages[4].games[0].isPlayed = false;
+        props.store.stages[5].games[0].isPlayed = true;
+    }
+})
 </script>
 
 <template>
@@ -40,9 +54,13 @@ const props = defineProps<Props>()
                 <icons-svg v-if="store.stages.length - 1 !== index"
                            style="transform: translateX(50%);"
                            class="line__icon"
+                           :class="{
+                               'line__icon--checked' : props.valueInput >= item.thresholdPoints
+                           }"
                            name-svg="star"
                            width-svg="18px"
                            height-svg="16.94px"
+
                 />
                 <icons-svg v-if="store.stages.length - 1 === index"
                            style="transform: translateY(-9%);"
@@ -55,8 +73,9 @@ const props = defineProps<Props>()
                      class="line__value line__value--position"
                 >0</div>
                 <div class="line__value">
-                    <span v-show="item.games[0].bestResult <= item.thresholdPoints">
-                        {{ current }}
+
+                    <span v-show="item.games[0].isPlayed">
+                        {{ valueInput }}
                         &nbsp;/&nbsp;
                     </span>
                     <span>{{ item.thresholdPoints }}</span>
@@ -64,9 +83,19 @@ const props = defineProps<Props>()
             </div>
         </div>
     </div>
+    <div class="counter">
+        {{ props.valueInput }}
+    </div>
 </template>
 
 <style lang="scss" scoped>
+.counter {
+    position: relative;
+    bottom: 120px;
+    @include fontInter;
+    font-size: 24px;
+}
+
 .line {
     display: flex;
     width: 100%;
@@ -146,5 +175,10 @@ const props = defineProps<Props>()
     position: absolute;
     top: -70.8%;
     right: 0;
+    transition: all .2s linear;
+}
+
+.line__icon.line__icon--checked {
+    fill: #3300FF;
 }
 </style>
