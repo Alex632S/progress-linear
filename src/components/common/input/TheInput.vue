@@ -22,6 +22,7 @@ function decrement() {
 
 <template>
     <div class="counter">
+<!--    == hiding ==-->
         <input class="counter__input"
                type="number"
                :max="store.stages[store.stages.length - 1].thresholdPoints"
@@ -46,6 +47,7 @@ function decrement() {
     position: relative;
 }
 
+// == hiding ==
 .counter__input[type=number] {
     @include fontInter;
 
