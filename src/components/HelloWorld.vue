@@ -7,37 +7,38 @@ const count = ref(0);
 </script>
 
 <template>
-  
-  <div class="progress-linear">
-    <div style="height:20px; top: 41px;" class="mark-wrapper mark-wrapper--flex">
-      <div class="mark mark-wrapper--flex">
-        <div style="text-align:left;" class="mark">0</div>
-        <div class="mark text-right">20 / 25</div>
+  <div class="progress-linear-wrapper">
+    <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--w-10 mark-value--left">0</span>
+        <span class="mark-value mark-value--w-60 mark-value--right">20 / 25</span>
       </div>
-      
-      <div class="mark text-right">50</div>
-      <div class="mark text-right">100</div>
 
-      <div class="mark text-right">200</div>
-
-      <div class="mark text-right">500</div>
-      <div class="mark text-right">1000</div>
-    </div>
-    
-    <div class="progress-linear__inner">
-      <div class="scale"></div>
-
-      <div class="mark-wrapper mark-wrapper--flex">
-        <div class="mark mark--border"></div>
-        <div class="mark mark--border"></div>
-        <div class="mark mark--border"></div>
-        <div class="mark mark--border"></div>
-        <div class="mark mark--border"></div>
-        <div class="mark mark--border"></div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--w-60 mark-value--right">20 / 25</span>
       </div>
-      
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--w-60 mark-value--right">200 / 100</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--w-60 mark-value--right">200 / 200</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--w-60 mark-value--right">200 / 500</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--right">1000</span>
+      </div>
     </div>
+
+    <div class="progress-linear">
+        <div class="progress-linear__inner">
+          <div class="scale"></div>
+        </div>
+      </div>
   </div>
+
+  
 
 
   <div class="card">
@@ -100,22 +101,47 @@ const count = ref(0);
 
   }
 
+  .mark-wrapper--z-full {
+    z-index: 9999;
+  }
   .mark-wrapper--flex {
     display: flex;
   }
-
   .mark {
     flex: 1 1 auto;
 
     height: 100%;
   }
-  
   .mark--border:not(:last-child) {
     border-right: solid 0.2px rgba(179, 179, 179, 1);
   }
+  .progress-linear-wrapper {
+    position: relative;
+  }
+  .mark-value {
+    position: absolute;
+    bottom: -28px; 
+    text-align: center; 
+    transform: translateX(50%);
+  }
 
+  .mark-wrapper .mark:last-child .mark-value{
+    transform: translateX(0%);
+  }
+  .mark--relative {
+    position: relative;
+  }
 
-  .text-right {
-    text-align:right;
+  .mark-value--w-10 {
+    width: 15px; 
+  }
+  .mark-value--w-60 {
+    width: 71px; 
+  }
+  .mark-value--right {
+    right: 0; 
+  }
+  .mark-value--left {
+    left: 0; 
   }
 </style>
