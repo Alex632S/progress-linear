@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import IconsSvg from "../assets/IconsSvg.vue"
 
 defineProps<{ msg: string }>();
 
@@ -8,26 +9,61 @@ const count = ref(0);
 
 <template>
   <div class="progress-linear-wrapper">
+
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--w-10 mark-value--left">0</span>
-        <span class="mark-value mark-value--w-60 mark-value--right">20 / 25</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+        </span>
       </div>
 
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--w-60 mark-value--right">20 / 25</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+        </span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--w-60 mark-value--right">200 / 100</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+        </span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--w-60 mark-value--right">200 / 200</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+        </span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--w-60 mark-value--right">200 / 500</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+        </span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--right">1000</span>
+        <span class="mark-value mark-value--top mark-value--right">
+          <IconsSvg name-svg="cup" width-svg="46.05px" height-svg="24.11px"></IconsSvg>
+        </span>
+      </div>
+    </div>
+
+    <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--w-10 mark-value--left">0</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">20 / 25</span>
+      </div>
+
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">25</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">100</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">200</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">500</span>
+      </div>
+      <div class="mark mark--relative mark--border">
+        <span class="mark-value mark-value--bottom mark-value--right">1000</span>
       </div>
     </div>
 
@@ -120,9 +156,16 @@ const count = ref(0);
   }
   .mark-value {
     position: absolute;
-    bottom: -28px; 
     text-align: center; 
     transform: translateX(50%);
+  }
+  
+  .mark-value--bottom {
+    bottom: -29px; 
+  }
+
+  .mark-value--top {
+    top: -29px; 
   }
 
   .mark-wrapper .mark:last-child .mark-value{

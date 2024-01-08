@@ -2,7 +2,7 @@
   <component :is="icon" :width="widthSvg" :height="heightSvg" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineAsyncComponent } from "vue";
 
 const props = defineProps({
