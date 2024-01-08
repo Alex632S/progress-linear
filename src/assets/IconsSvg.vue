@@ -1,13 +1,9 @@
 <template>
-  <component
-    :is="icon"
-    :width="widthSvg"
-    :height="heightSvg"
-  />
+  <component :is="icon" :width="widthSvg" :height="heightSvg" />
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from "vue";
 
 const props = defineProps({
   nameSvg: {
@@ -16,16 +12,15 @@ const props = defineProps({
   },
   widthSvg: {
     required: true,
-    type: String
+    type: String,
   },
   heightSvg: {
     required: true,
-    type: String
+    type: String,
   },
 });
 
 const icon = defineAsyncComponent({
-  loader: () => import(`./svg/${props.nameSvg}.svg?component`)
+  loader: () => import(`./svg/${props.nameSvg}.svg?component`),
 });
-
 </script>
