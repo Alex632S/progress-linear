@@ -5,9 +5,49 @@ import IconsSvg from "../assets/IconsSvg.vue"
 defineProps<{ msg: string }>();
 
 const count = ref(0);
+
+// Mocks values
+const S = ref(900)
+const n = ref(6)
+const p = ref(25)
+
+// 25 50 100 300 500
+
+const params = {
+  _SumAll: String(S.value) + 'px',
+}
+
+const wS = ref(0)
+const width = ref()
+
+const result = () => {
+
+  if (count.value <= 25 ) {
+    p.value = 25 
+  }
+  if (count.value >= 25 && count.value <= 50) {
+    p.value = 25 
+  }
+  if (count.value >= 50 && count.value <= 100) {
+    p.value = 50 
+  }
+  if (count.value >= 100 && count.value <= 200) {
+    p.value = 100 
+  }
+  if (count.value >= 500 && count.value <= 1000) {
+    p.value = 100 
+  }
+
+  count.value += 1 
+  wS.value += (S.value / n.value) / p.value * (100 / S.value)
+  width.value = String(wS.value + '%')
+}
+
+
 </script>
 
 <template>
+  
   <div class="progress-linear-wrapper">
 
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
@@ -47,11 +87,11 @@ const count = ref(0);
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--bottom mark-value--w-10 mark-value--left">0</span>
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">20 / 25</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">{{ count }} / 25</span>
       </div>
 
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">25</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">50</span>
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">100</span>
@@ -74,7 +114,7 @@ const count = ref(0);
       </div>
   </div>
 
-  
+  <button style="margin-top: 70px;" @click="result">+</button>
 
 
   <div class="card">
@@ -104,7 +144,7 @@ const count = ref(0);
 }
 
 .progress-linear {
-  width: 900px;
+  width: v-bind('params._SumAll');
   height: 40px;
 
   position: relative;
@@ -124,7 +164,7 @@ const count = ref(0);
   position: absolute;
 
   background-color: #3300FF;
-  width: 43%;
+  width: v-bind('width');
   height: 100%;
 
 }
