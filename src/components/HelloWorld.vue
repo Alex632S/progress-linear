@@ -87,23 +87,29 @@ const result = () => {
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--bottom mark-value--w-10 mark-value--left">0</span>
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">{{ count }} / 25</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">
+          <span v-if="count <= 25">{{ count + ' /' }}</span>  25</span>
       </div>
 
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">50</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">
+          <span v-if="count > 25 && count <= 50">{{ count + ' /' }}</span> 50</span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">100</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">
+          <span v-if="count > 50 && count <= 100">{{ count + ' /' }}</span> 100</span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">200</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">
+          <span v-if="count > 100 && count <= 200">{{ count + ' /' }}</span> 200</span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">500</span>
+        <span class="mark-value mark-value--bottom mark-value--w-60 mark-value--right">
+          <span v-if="count > 200 && count <= 500">{{ count + ' /' }}</span> 500</span>
       </div>
       <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--right">1000</span>
+        <span class="mark-value mark-value--bottom mark-value--right">
+          <span v-if="count > 500 && count <= 1000">{{ count + ' /' }}</span> 1000</span>
       </div>
     </div>
 
