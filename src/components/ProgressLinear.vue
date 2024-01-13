@@ -2,93 +2,95 @@
 import { ref } from "vue";
 import IconsSvg from "../assets/IconsSvg.vue";
 
-defineProps<{ msg: string }>();
+const props = defineProps({
+  widthFull: String,
+});
 
 const stages = [
-    {
-      name: "Этап первый",
-      id: 1,
-      thresholdPoints: 25,
-      games: [
-        {
-          name: "Игра 1.1",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    },
-    {
-      name: "Этап второй",
-      id: 2,
-      thresholdPoints: 50,
-      games: [
-        {
-          name: "Игра 2.1",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: "Этап третий",
-      thresholdPoints: 100,
-      games: [
-        {
-          name: "Игра 3.1",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: "Этап четвертый",
-      thresholdPoints: 200,
-      games: [
-        {
-          name: "Игра 4.1",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    },
-    {
-      id: 5,
-      name: "Этап пятый",
-      thresholdPoints: 500,
-      games: [
-        {
-          name: "Игра 5.1",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    },
-    {
-      id: 6,
-      name: "Этап шестой",
-      thresholdPoints: 1000,
-      games: [
-        {
-          name: "Игра 6.1",
-          bestResult: 0,
-          isPlayed: false
-        },
-        {
-          name: "Игра 6.2",
-          bestResult: 0,
-          isPlayed: false
-        }
-      ]
-    }
-  ]
+  {
+    name: "Этап первый",
+    id: 1,
+    thresholdPoints: 25,
+    games: [
+      {
+        name: "Игра 1.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+  {
+    name: "Этап второй",
+    id: 2,
+    thresholdPoints: 50,
+    games: [
+      {
+        name: "Игра 2.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Этап третий",
+    thresholdPoints: 100,
+    games: [
+      {
+        name: "Игра 3.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Этап четвертый",
+    thresholdPoints: 200,
+    games: [
+      {
+        name: "Игра 4.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Этап пятый",
+    thresholdPoints: 500,
+    games: [
+      {
+        name: "Игра 5.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "Этап шестой",
+    thresholdPoints: 1000,
+    games: [
+      {
+        name: "Игра 6.1",
+        bestResult: 0,
+        isPlayed: false,
+      },
+      {
+        name: "Игра 6.2",
+        bestResult: 0,
+        isPlayed: false,
+      },
+    ],
+  },
+];
 
 const count = ref(0);
 
-const S = ref(900);
+const S = ref<number>(Number(props.widthFull));
 const n = ref<number>(stages.length);
-const p = ref(25);
+const p = ref<number>(stages[0].thresholdPoints);
 
 const params = {
   _SumAll: String(S.value) + "px",
@@ -97,35 +99,30 @@ const params = {
 const wS = ref(0);
 const width = ref();
 
-const Area = (
-  _mark: string,
-  _value: number,
-  _pre: number,
-  _end: number,
-): void => {
-  if (
-    (count.value === _pre && _mark === "plus") ||
-    (count.value > _pre && count.value < _end) ||
-    (count.value === _end && _mark === "minus")
-  ) {
-    p.value = _value;
+const Area = (_mark: string): void => {
+  for (let i: number = 0; i < stages.length; i++) {
+    let pre = i === 0 ? 0 : i - 1;
+    if (
+      (count.value === stages[pre].thresholdPoints && _mark === "plus") ||
+      (count.value > stages[pre].thresholdPoints &&
+        count.value < stages[i].thresholdPoints) ||
+      (count.value === stages[i].thresholdPoints && _mark === "minus")
+    ) {
+      p.value =
+        stages[i].thresholdPoints - stages[pre].thresholdPoints === 0
+          ? stages[0].thresholdPoints
+          : stages[i].thresholdPoints - stages[pre].thresholdPoints;
+    }
   }
 };
 
-
 const result = (mark: string) => {
- 
-  for(let i: number = 0; i < stages.length; i++) {
-    let pre = i - 1 <= 0 ? 0 : i - 1
-    Area(
-      mark, 
-      stages[pre].thresholdPoints, 
-      stages[i].thresholdPoints - stages[pre].thresholdPoints, 
-      stages[i].thresholdPoints
-    )
-  }
+  Area(mark);
 
-  if (mark === "plus" && count.value < stages[stages.length - 1].thresholdPoints) {
+  if (
+    mark === "plus" &&
+    count.value < stages[stages.length - 1].thresholdPoints
+  ) {
     count.value += 1;
     wS.value += (S.value / n.value / p.value) * (100 / S.value);
   }
@@ -137,6 +134,7 @@ const result = (mark: string) => {
 
   width.value = String(wS.value + "%");
 };
+
 </script>
 
 <template>
@@ -145,7 +143,8 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 25 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 25 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 25 ? '1.5' : '1'}"
+            class="icon-svg"
             name-svg="star"
             width-svg="18px"
             height-svg="17px"
@@ -156,7 +155,8 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 50 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 50 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 50 ? '1.5' : '1' }"
+            class="icon-svg"
             name-svg="star"
             width-svg="18px"
             height-svg="17px"
@@ -166,7 +166,7 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 100 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 100 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 100 ? '1.5' : '1' }"
             name-svg="star"
             width-svg="18px"
             height-svg="17px"
@@ -176,7 +176,7 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 200 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 200 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 200 ? '1.5' : '1' }"
             name-svg="star"
             width-svg="18px"
             height-svg="17px"
@@ -186,7 +186,7 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 500 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 500 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 500 ? '1.5' : '1' }"
             name-svg="star"
             width-svg="18px"
             height-svg="17px"
@@ -196,7 +196,7 @@ const result = (mark: string) => {
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 1000 ? '#3300FF' : 'currentColor' }"
+            :style="{ color: count >= 1000 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 1000 ? '1.5' : '1' }"
             name-svg="cup"
             width-svg="46.05px"
             height-svg="24.11px"
@@ -214,7 +214,8 @@ const result = (mark: string) => {
         <span
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
-          <span v-if="count <= 25">{{ count + " /" }}</span> 25</span
+          <span v-if="count <= 25">{{ count + " /" }}</span>
+          {{ stages[0].thresholdPoints }}</span
         >
       </div>
 
@@ -223,7 +224,7 @@ const result = (mark: string) => {
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
           <span v-if="count > 25 && count <= 50">{{ count + " /" }}</span>
-          50</span
+          {{ stages[1].thresholdPoints }}</span
         >
       </div>
       <div class="mark mark--relative mark--border">
@@ -231,7 +232,7 @@ const result = (mark: string) => {
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
           <span v-if="count > 50 && count <= 100">{{ count + " /" }}</span>
-          100</span
+          {{ stages[2].thresholdPoints }}</span
         >
       </div>
       <div class="mark mark--relative mark--border">
@@ -239,7 +240,7 @@ const result = (mark: string) => {
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
           <span v-if="count > 100 && count <= 200">{{ count + " /" }}</span>
-          200</span
+          {{ stages[3].thresholdPoints }}</span
         >
       </div>
       <div class="mark mark--relative mark--border">
@@ -247,13 +248,13 @@ const result = (mark: string) => {
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
           <span v-if="count > 200 && count <= 500">{{ count + " /" }}</span>
-          500</span
+          {{ stages[4].thresholdPoints }}</span
         >
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--bottom mark-value--right">
           <span v-if="count > 500 && count < 1000">{{ count + " /" }}</span>
-          1000</span
+          {{ stages[5].thresholdPoints }}</span
         >
       </div>
     </div>
@@ -265,27 +266,27 @@ const result = (mark: string) => {
     </div>
   </div>
 
-  <div class="mark-wrapper--flex">
+  <div class="mark-wrapper--flex" style="justify-content:center; gap: 10px;">
     <button style="margin-top: 70px" @click="result('minus')">-</button>
     <button style="margin-top: 70px" @click="result('plus')">+</button>
   </div>
 
   <div class="card">
     <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
+      Progress linear
     </p>
   </div>
 </template>
 
 <style scoped>
+
 .read-the-docs {
   color: #888;
 }
 
 .progress-linear {
   width: v-bind("params._SumAll");
-  height: 40px;
+  height: 35px;
 
   position: relative;
 }
@@ -294,7 +295,18 @@ const result = (mark: string) => {
   width: 100%;
   height: 100%;
   border-radius: 30px;
-  background-color: #f4efefd9;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) -3.62%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  backdrop-filter: blur(15px);
+  box-shadow:
+    0px 30px 30px 0px rgba(0, 0, 0, 0.4),
+    0px 0px 5px 0px #cf7474 inset,
+    0px -1px 8px 0px #9375b6 inset;
 
   position: relative;
   overflow-x: hidden;
@@ -303,9 +315,17 @@ const result = (mark: string) => {
 .scale {
   position: absolute;
 
-  background-color: #3300ff;
   width: v-bind("width");
   height: 100%;
+
+  border-radius: 5px;
+  background: linear-gradient(
+      180deg,
+      #f23b3b,
+      rgba(254, 200, 241, 0) 26.73%
+    ),
+    radial-gradient(137.13% 253.39% at 76.68% 66.67%, #602ea6 0%, #f23b3b 100%);
+  background-blend-mode: overlay, normal;
 }
 
 .mark-wrapper {

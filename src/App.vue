@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+import ProgressLinear from "./components/ProgressLinear.vue";
 </script>
 
 <template>
-  <HelloWorld />
+  <ProgressLinear width-full="900" />
 </template>
 
 <style scoped>
