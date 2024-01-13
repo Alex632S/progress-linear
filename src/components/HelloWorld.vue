@@ -11,7 +11,6 @@ const S = ref(900)
 const n = ref(6)
 const p = ref(25)
 
-// 25 50 100 300 500
 
 const params = {
   _SumAll: String(S.value) + 'px',
@@ -20,30 +19,41 @@ const params = {
 const wS = ref(0)
 const width = ref()
 
-const result = () => {
-
-  if (count.value <= 25 ) {
-    p.value = 25 
+const result = (mark: string) => {
+  if ((count.value < 25) || (count.value === 25 && mark === 'minus')) {
+    p.value = 25
+    console.log('1')
   }
-  if (count.value >= 25 && count.value <= 50) {
+  if ((count.value === 25 && mark === 'plus') || (count.value > 25 && count.value < 50) || (count.value === 50 && mark === 'minus') ) {
     p.value = 25 
+    console.log('2')
   }
-  if (count.value >= 50 && count.value <= 100) {
+  if ((count.value === 50 && mark === 'plus') || (count.value > 50 && count.value < 100) || (count.value === 100 && mark === 'minus')) {
     p.value = 50 
+    console.log('3')
   }
-  if (count.value >= 100 && count.value <= 200) {
+  if ((count.value === 100 && mark === 'plus') || (count.value > 100 && count.value < 200) || (count.value === 200 && mark === 'minus')) {
     p.value = 100 
   }
-  if (count.value >= 500 && count.value <= 1000) {
-    p.value = 100 
+  if ((count.value === 200 && mark === 'plus') || (count.value > 200 && count.value < 500) || (count.value === 500 && mark === 'minus')) {
+    p.value = 300 
+  }
+  if ((count.value === 500 && mark === 'plus') || (count.value > 500 && count.value < 1000) || (count.value === 1000 && mark === 'minus')) {
+    p.value = 500 
   }
 
-  count.value += 1 
-  wS.value += (S.value / n.value) / p.value * (100 / S.value)
+  if(mark === 'plus' && count.value < 1000) {
+    count.value += 1 
+    wS.value += (S.value / n.value) / p.value * (100 / S.value)
+  }
+
+  if(mark === 'minus' && count.value > 0) {
+    count.value -= 1 
+    wS.value -= (S.value / n.value) / p.value * (100 / S.value)
+  }
+ 
   width.value = String(wS.value + '%')
 }
-
-
 </script>
 
 <template>
@@ -53,33 +63,33 @@ const result = () => {
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 25 ? '#3300FF' : 'currentColor'}" name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
         </span>
       </div>
 
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 50 ? '#3300FF' : 'currentColor'}" name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
         </span>
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 100 ? '#3300FF' : 'currentColor'}" name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
         </span>
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 200 ? '#3300FF' : 'currentColor'}" name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
         </span>
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 500 ? '#3300FF' : 'currentColor'}" name-svg="star" width-svg="18px" height-svg="17px"></IconsSvg>
         </span>
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg name-svg="cup" width-svg="46.05px" height-svg="24.11px"></IconsSvg>
+          <IconsSvg :style="{color: count >= 1000 ? '#3300FF' : 'currentColor'}" name-svg="cup" width-svg="46.05px" height-svg="24.11px"></IconsSvg>
         </span>
       </div>
     </div>
@@ -109,7 +119,7 @@ const result = () => {
       </div>
       <div class="mark mark--relative mark--border">
         <span class="mark-value mark-value--bottom mark-value--right">
-          <span v-if="count > 500 && count <= 1000">{{ count + ' /' }}</span> 1000</span>
+          <span v-if="count > 500 && count < 1000">{{ count + ' /' }}</span> 1000</span>
       </div>
     </div>
 
@@ -120,8 +130,10 @@ const result = () => {
       </div>
   </div>
 
-  <button style="margin-top: 70px;" @click="result">+</button>
-
+  <div class="mark-wrapper--flex">
+    <button style="margin-top: 70px;" @click="result('minus')">-</button>
+    <button style="margin-top: 70px;" @click="result('plus')">+</button>
+  </div>
 
   <div class="card">
     <p>
@@ -129,19 +141,6 @@ const result = () => {
       <code>components/HelloWorld.vue</code> to test HMR
     </p>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Install
-    <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
-    in your IDE for a better DX
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
 <style scoped>
@@ -225,7 +224,7 @@ const result = () => {
     width: 15px; 
   }
   .mark-value--w-60 {
-    width: 71px; 
+    width: 80px; 
   }
   .mark-value--right {
     right: 0; 
@@ -233,4 +232,6 @@ const result = () => {
   .mark-value--left {
     left: 0; 
   }
+
+ 
 </style>
