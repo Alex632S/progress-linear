@@ -6,7 +6,7 @@ defineProps<{ msg: string }>();
 
 const count = ref(0);
 
-// Mocks values.
+
 const S = ref(900)
 const n = ref(6)
 const p = ref(25)
