@@ -4,10 +4,90 @@ import IconsSvg from "../assets/IconsSvg.vue";
 
 defineProps<{ msg: string }>();
 
+const stages = [
+    {
+      name: "Этап первый",
+      id: 1,
+      thresholdPoints: 25,
+      games: [
+        {
+          name: "Игра 1.1",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    },
+    {
+      name: "Этап второй",
+      id: 2,
+      thresholdPoints: 50,
+      games: [
+        {
+          name: "Игра 2.1",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    },
+    {
+      id: 3,
+      name: "Этап третий",
+      thresholdPoints: 100,
+      games: [
+        {
+          name: "Игра 3.1",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    },
+    {
+      id: 4,
+      name: "Этап четвертый",
+      thresholdPoints: 200,
+      games: [
+        {
+          name: "Игра 4.1",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    },
+    {
+      id: 5,
+      name: "Этап пятый",
+      thresholdPoints: 500,
+      games: [
+        {
+          name: "Игра 5.1",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    },
+    {
+      id: 6,
+      name: "Этап шестой",
+      thresholdPoints: 1000,
+      games: [
+        {
+          name: "Игра 6.1",
+          bestResult: 0,
+          isPlayed: false
+        },
+        {
+          name: "Игра 6.2",
+          bestResult: 0,
+          isPlayed: false
+        }
+      ]
+    }
+  ]
+
 const count = ref(0);
 
 const S = ref(900);
-const n = ref(6);
+const n = ref<number>(stages.length);
 const p = ref(25);
 
 const params = {
@@ -32,16 +112,20 @@ const Area = (
   }
 };
 
+
 const result = (mark: string) => {
  
-  Area(mark, 25, 0, 25)
-  Area(mark, 25, 25, 50)
-  Area(mark, 50, 50, 100)
-  Area(mark, 100, 100, 200)
-  Area(mark, 300, 200, 500)
-  Area(mark, 500, 500, 1000)
+  for(let i: number = 0; i < stages.length; i++) {
+    let pre = i - 1 <= 0 ? 0 : i - 1
+    Area(
+      mark, 
+      stages[pre].thresholdPoints, 
+      stages[i].thresholdPoints - stages[pre].thresholdPoints, 
+      stages[i].thresholdPoints
+    )
+  }
 
-  if (mark === "plus" && count.value < 1000) {
+  if (mark === "plus" && count.value < stages[stages.length - 1].thresholdPoints) {
     count.value += 1;
     wS.value += (S.value / n.value / p.value) * (100 / S.value);
   }
