@@ -153,55 +153,16 @@ const result = (mark: string) => {
     </div>
 
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
-      <div class="mark mark--relative mark--border">
-        <span
+      <div v-for="(stage, index) in stages" :key="stage.id" class="mark mark--relative mark--border">
+        <span v-if="index === 0"
           class="mark-value mark-value--bottom mark-value--w-10 mark-value--left"
           >0</span
         >
         <span
           class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
         >
-          <span v-if="count <= 25">{{ count + " /" }}</span>
-          {{ stages[0].thresholdPoints }}</span
-        >
-      </div>
-
-      <div class="mark mark--relative mark--border">
-        <span
-          class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
-        >
-          <span v-if="count > 25 && count <= 50">{{ count + " /" }}</span>
-          {{ stages[1].thresholdPoints }}</span
-        >
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span
-          class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
-        >
-          <span v-if="count > 50 && count <= 100">{{ count + " /" }}</span>
-          {{ stages[2].thresholdPoints }}</span
-        >
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span
-          class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
-        >
-          <span v-if="count > 100 && count <= 200">{{ count + " /" }}</span>
-          {{ stages[3].thresholdPoints }}</span
-        >
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span
-          class="mark-value mark-value--bottom mark-value--w-60 mark-value--right"
-        >
-          <span v-if="count > 200 && count <= 500">{{ count + " /" }}</span>
-          {{ stages[4].thresholdPoints }}</span
-        >
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--bottom mark-value--right">
-          <span v-if="count > 500 && count < 1000">{{ count + " /" }}</span>
-          {{ stages[5].thresholdPoints }}</span
+          <span v-if="count > (index === 0 ? 0 : stages[(index - 1)].thresholdPoints) && count <= stage.thresholdPoints">{{ count + " /" }}</span>
+          {{ stage.thresholdPoints }}</span
         >
       </div>
     </div>
@@ -226,11 +187,6 @@ const result = (mark: string) => {
 </template>
 
 <style scoped>
-
-.read-the-docs {
-  color: #888;
-}
-
 .progress-linear {
   width: v-bind("params._SumAll");
   height: 35px;
