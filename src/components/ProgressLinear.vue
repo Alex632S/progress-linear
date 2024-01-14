@@ -134,72 +134,19 @@ const result = (mark: string) => {
 
   width.value = String(wS.value + "%");
 };
-
 </script>
 
 <template>
   <div class="progress-linear-wrapper">
     <div class="mark-wrapper mark-wrapper--z-full mark-wrapper--flex">
-      <div class="mark mark--relative mark--border">
+      <div v-for="(stage, index) in stages" :key="stage.id" class="mark mark--relative mark--border">
         <span class="mark-value mark-value--top mark-value--right">
           <IconsSvg
-            :style="{ color: count >= 25 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 25 ? '1.5' : '1'}"
+            :style="{ color: count >= stage.thresholdPoints ? '#f23b3b' : 'currentColor', strokeWidth: count >= stage.thresholdPoints ? '1.5' : '1'}"
             class="icon-svg"
-            name-svg="star"
-            width-svg="18px"
-            height-svg="17px"
-          ></IconsSvg>
-        </span>
-      </div>
-
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg
-            :style="{ color: count >= 50 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 50 ? '1.5' : '1' }"
-            class="icon-svg"
-            name-svg="star"
-            width-svg="18px"
-            height-svg="17px"
-          ></IconsSvg>
-        </span>
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg
-            :style="{ color: count >= 100 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 100 ? '1.5' : '1' }"
-            name-svg="star"
-            width-svg="18px"
-            height-svg="17px"
-          ></IconsSvg>
-        </span>
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg
-            :style="{ color: count >= 200 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 200 ? '1.5' : '1' }"
-            name-svg="star"
-            width-svg="18px"
-            height-svg="17px"
-          ></IconsSvg>
-        </span>
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg
-            :style="{ color: count >= 500 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 500 ? '1.5' : '1' }"
-            name-svg="star"
-            width-svg="18px"
-            height-svg="17px"
-          ></IconsSvg>
-        </span>
-      </div>
-      <div class="mark mark--relative mark--border">
-        <span class="mark-value mark-value--top mark-value--right">
-          <IconsSvg
-            :style="{ color: count >= 1000 ? '#f23b3b' : 'currentColor', strokeWidth: count >= 1000 ? '1.5' : '1' }"
-            name-svg="cup"
-            width-svg="46.05px"
-            height-svg="24.11px"
+            :name-svg="index === stages.length - 1 ? 'cup' : 'star'"
+            :width-svg="index === stages.length - 1 ? '46.05px' : '18px'"
+            :height-svg="index === stages.length - 1 ? '24.11px' : '17px'"
           ></IconsSvg>
         </span>
       </div>
